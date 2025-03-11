@@ -5,7 +5,9 @@
   "license": "ISC",
   "scripts": {
     "dev": "nodemon ./src/index.ts",
-    "database:drop": "nodemon ./src/database/drop.database.ts"
+    "database:drop": "nodemon ./src/database/drop.database.ts",
+    "database:addAdmins": "nodemon ./src/database/migrations/addSuperAdmin.ts",
+    "database:addSettings": "nodemon ./src/database/migrations/addSettings.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
