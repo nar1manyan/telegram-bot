@@ -9,4 +9,4 @@ export const INACTIVITY_TIME = 30 * 60 * 1000;
 
 export const free_commands = ['/start', '/ask'];
 
-export const owners = ['1813338150', "1748855835"]
+export const owners = [1813338150, 1748855835];
