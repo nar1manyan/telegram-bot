@@ -174,4 +174,30 @@ export const Bot_Commands = () => {
       await bot.telegram.sendMessage(args[0], 'Администратор подтвердил ваш доступ.\nБот к вашим услугам, перед началом поменяй пароль на свой (Старый 123123)\nс помощью команды /change_pass');
     }, 2000);
   });
+
+  bot.hears("/admins", async (ctx) => {
+    const admins = await AdminModel.findAll() as any;
+    let text = "Список всех администраторов: \n\n";
+    for (const admin of admins) {
+      text += `Имя - ${admin.full_name}\nДоступность - ${admin.isSuper}\nTelegram ID - ${admin.telegram_id}\n\n`;
+    }
+    ctx.reply(text + "\n\nДля действий с администраторами введите команду /edit_admin");
+  });
+
+  bot.hears("/con_test", (ctx) => {
+    ctx.reply("Команда находится в разработке. Иди нахуй");
+  });
+
+  bot.command("logout", async (ctx) => {
+    const isSuper = await AdminModel.findOne({ where: { telegram_id: ctx.from.id, isSuper: true } });
+    if (!isSuper) return ctx.reply("Доступ запрещен! Пошел нахер");
+    const args = ctx.message.text.split(' ').slice(1);
+    if (!args.length) return ctx.reply("Неправильный Telegram ID. Пример: /logout telegram_id");
+    const settings = await DBSettings.findOne({ where: { for: args[0], name: "logged", value: true } }) as any;
+    if (!settings) return ctx.reply("Администратор с таким ид не найден или он не вошел в систему");
+    settings.value = false;
+    await settings.save();
+    ctx.reply("Вы вышли с системы данного администратора. Он получит сообщение насчет этого");
+    bot.telegram.sendMessage(args[0], "Супер администратор вышел с вашей системы без вашего разрешения. Если вы не согласны с этим набейте ему ебало.");
+  });
 };
