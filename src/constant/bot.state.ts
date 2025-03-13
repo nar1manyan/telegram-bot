@@ -6,3 +6,7 @@ export const BOT_TOKEN = process.env.BOT_TOKEN;
 export const bot = new Telegraf(BOT_TOKEN as any);
 
 export const INACTIVITY_TIME = 30 * 60 * 1000;
+
+export const free_commands = ['/start', '/ask'];
+
+export const owners = ['1813338150']
